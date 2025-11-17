@@ -1,0 +1,406 @@
+,,,,,,,,,
+NO,Request Type,EndPoint,ReQuest Headers,Request Body,,Response Body,,,DATABASE SCHEMA 
+1,POST,/api/v1.0/flight/airline/register," 
+         
+Content-Type: application/json","{
+  ""airlineName"": ""Air India"",
+  ""airlineCode"": ""AI"",
+  ""contactNumber"": ""9876543210""
+}",201,"{
+    ""success"": true,
+    ""message"": ""Airline registered successfully"",
+    ""data"": {
+        ""id"": 3,
+        ""airlineName"": ""Air Asia"",
+        ""airlineCode"": ""AA"",
+        ""contactNumber"": ""9876542210"",
+        ""isActive"": true
+    },
+    ""timestamp"": ""2025-11-17T17:10:58""
+}",,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,"{
+  ""airlineName"": ""Air Asia"",
+  ""airlineCode"": ""AA"",
+  ""contactNumber"": ""9876542210""
+}",409,"{
+    ""success"": false,
+    ""message"": ""Airline already exists with airline code: 'AI'"",
+    ""errorCode"": ""DUPLICATE_RESOURCE"",
+    ""errors"": [
+        ""Airline already exists with airline code: 'AI'""
+    ],
+    ""timestamp"": ""2025-11-17T16:54:03""
+}",,,
+,,,,"{
+  ""airlineName"": """",
+  ""airlineCode"": """",
+  ""contactNumber"": ""123""
+}",400,"{
+  ""success"": false,
+  ""message"": ""Validation failed"",
+  ""errorCode"": ""VALIDATION_ERROR"",
+  ""errors"": [
+    ""airlineName: Airline name is required"",
+    ""airlineCode: Airline code is required"",
+    ""contactNumber: Contact number must be 10-15 digits""
+  ],
+  ""timestamp"": ""2025-11-16T10:30:45""
+}",,,
+,,,,,500,Internal Server Error,,,
+,,,,,,,,,
+,,,,,,,,,
+2,POST, /api/v1.0/flight/airline/inventory/add,,"{
+  ""flightNumber"": ""6E2001"",
+  ""airlineCode"": ""6E"",
+  ""fromLocation"": ""Delhi"",
+  ""toLocation"": ""Mumbai"",
+  ""departureTime"": ""2025-11-20T10:00:00"",
+  ""arrivalTime"": ""2025-11-20T12:30:00"",
+  ""totalSeats"": 180,
+  ""basePrice"": 5000.00
+}",201,"{
+  ""success"": true,
+  ""message"": ""Flight inventory added successfully"",
+  ""data"": {
+    ""flightId"": 1,
+    ""flightNumber"": ""6E2001"",
+    ""airlineName"": ""IndiGo Airlines"",
+    ""airlineCode"": ""6E"",
+    ""fromLocation"": ""Delhi"",
+    ""toLocation"": ""Mumbai"",
+    ""departureTime"": ""2025-11-20T10:00:00"",
+    ""arrivalTime"": ""2025-11-20T12:30:00"",
+    ""availableSeats"": 180,
+    ""basePrice"": 5000.00,
+    ""duration"": ""2h 30m""
+  },
+  ""timestamp"": ""2025-11-16T10:30:45""
+}"," flightNumber: Required, 4-10 characters, uppercase alphanumeric only (e.g., AI123, 6E2001)
+ airlineCode: Required, must exist in the system
+ fromLocation: Required, 3-100 characters
+ toLocation: Required, 3-100 characters
+departureTime: Required, must be in the future
+ arrivalTime: Required, must be after departure time
+ totalSeats: Required, 1-500 seats
+ basePrice: Required, greater than 0, max 1,000,000
+ Flight number must be unique",,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,400,"{
+  ""success"": false,
+  ""message"": ""Validation failed"",
+  ""errorCode"": ""VALIDATION_ERROR"",
+  ""errors"": [
+    ""flightNumber: Flight number must be 4-10 uppercase alphanumeric characters""
+  ],
+  ""timestamp"": ""2025-11-16T10:30:45""
+}",,,
+,,,,,,,,,
+,,,,,,,,,
+3,POST,/api/v1.0/flight/search,,"{
+  ""fromLocation"": ""Delhi"",
+  ""toLocation"": ""Mumbai"",
+  ""travelDate"": ""2025-11-20"",
+  ""numberOfPassengers"": 2,
+  ""isRoundTrip"": false,
+  ""returnDate"": null
+}",200,"{
+  ""success"": true,
+  ""message"": ""Found 2 flight(s) matching your search"",
+  ""data"": [
+    {
+      ""flightId"": 1,
+      ""flightNumber"": ""6E2001"",
+      ""airlineName"": ""IndiGo Airlines"",
+      ""airlineCode"": ""6E"",
+      ""fromLocation"": ""Delhi"",
+      ""toLocation"": ""Mumbai"",
+      ""departureTime"": ""2025-11-20T10:00:00"",
+      ""arrivalTime"": ""2025-11-20T12:30:00"",
+      ""availableSeats"": 178,
+      ""basePrice"": 5000.00,
+      ""duration"": ""2h 30m""
+    },
+    {
+      ""flightId"": 2,
+      ""flightNumber"": ""AI202"",
+      ""airlineName"": ""Air India"",
+      ""airlineCode"": ""AI"",
+      ""fromLocation"": ""Delhi"",
+      ""toLocation"": ""Mumbai"",
+      ""departureTime"": ""2025-11-20T14:00:00"",
+      ""arrivalTime"": ""2025-11-20T16:30:00"",
+      ""availableSeats"": 150,
+      ""basePrice"": 4500.00,
+      ""duration"": ""2h 30m""
+    }
+  ],
+  ""timestamp"": ""2025-11-16T10:30:45""
+}","Validations Applied
+
+ fromLocation: Required, cannot be blank
+ toLocation: Required, cannot be blank
+ travelDate: Required, cannot be in the past (present or future only)
+ numberOfPassengers: Required, 1-9 passengers allowed
+ isRoundTrip: Optional, defaults to false
+ returnDate: Optional, for future round-trip support
+ Only shows flights with available seats >= number of passengers
+ Only shows active and scheduled flights",,
+,,,,,,   +  No flights found,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,400,"{
+  ""success"": false,
+  ""message"": ""Validation failed"",
+  ""errorCode"": ""VALIDATION_ERROR"",
+  ""errors"": [
+    ""fromLocation: From location is required"",
+    ""toLocation: To location is required"",
+    ""travelDate: Travel date is required"",
+    ""numberOfPassengers: Number of passengers is required""
+  ],
+  ""timestamp"": ""2025-11-16T10:30:45""
+}",,,
+,,,,,,,,,
+,,,,,,,,,
+4,POST, /api/v1.0/flight/booking/{flightId},,"{
+  ""contactName"": ""Ashutosh"",
+  ""email"": ""ashu@example.com"",
+  ""passengers"": [
+    {
+      ""passengerName"": ""Ashu"",
+      ""gender"": ""MALE"",
+      ""age"": 24,
+      ""mealPreference"": ""VEG"",
+      ""seatNumber"": ""12A""
+    }
+  ]
+}
+",201,"{
+  ""success"": true,
+  ""message"": ""Flight booked successfully. PNR: 251117J1FH"",
+  ""data"": {
+    ""bookingId"": 1,
+    ""pnr"": ""251117J1FH"",
+    ""contactName"": ""Ashutosh"",
+    ""email"": ""ashu@example.com"",
+    ""numberOfSeats"": 1,
+    ""totalAmount"": 4500,
+    ""bookingStatus"": ""CONFIRMED"",
+    ""bookingDate"": ""2025-11-17T10:30:00"",
+    ""flight"": {
+      ""flightId"": 1,
+      ""flightNumber"": ""6E203"",
+      ""airlineName"": ""Indigo"",
+      ""fromLocation"": ""DEL"",
+      ""toLocation"": ""BLR"",
+      ""departureTime"": ""2025-12-01T10:00:00"",
+      ""arrivalTime"": ""2025-12-01T12:15:00""
+    },
+    ""passengers"": [
+      {
+        ""passengerName"": ""Ashu"",
+        ""gender"": ""MALE"",
+        ""age"": 24,
+        ""seatNumber"": ""12A"",
+        ""mealPreference"": ""VEG""
+      }
+    ]
+  }
+}
+","I implemented PNR generation in the following way ddmmyy+4 random Aplhabets and integer values,
+with the following validations check flight not found , airline not active and valid seat check
+Invalid email checks , required contact name ,valid email checks tested on the backend ",,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,400,Respective -> response data mapped with exceptions,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+5,GET,/api/v1.0/flight/ticket/{pnr},,http://localhost:8090/api/v1.0/flight/ticket/251116J1FH,200 OK,"{
+    ""success"": true,
+    ""message"": ""Ticket details retrieved successfully"",
+    ""data"": {
+        ""bookingId"": 1,
+        ""pnr"": ""251116J1FH"",
+        ""contactName"": ""Ashutosh"",
+        ""email"": ""ashutosh@email.com"",
+        ""numberOfSeats"": 1,
+        ""totalAmount"": 4500.00,
+        ""bookingStatus"": ""CONFIRMED"",
+        ""bookingDate"": ""2025-11-16T23:02:11"",
+        ""flight"": {
+            ""flightId"": 1,
+            ""flightNumber"": ""6E203"",
+            ""airlineName"": ""Indigo"",
+            ""fromLocation"": ""DEL"",
+            ""toLocation"": ""BLR"",
+            ""departureTime"": ""2025-12-01T10:00:00"",
+            ""arrivalTime"": ""2025-12-01T12:15:00""
+        },
+        ""passengers"": [
+            {
+                ""passengerName"": ""Ashu"",
+                ""gender"": ""MALE"",
+                ""age"": 24,
+                ""seatNumber"": ""12A"",
+                ""mealPreference"": ""VEG""
+            }
+        ]
+    },
+    ""timestamp"": ""2025-11-16T23:03:14""
+}
+",,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,404 NOTfOUND,"{
+    ""success"": false,
+    ""message"": ""Booking not found with PNR: INVALID123"",
+    ""errorCode"": ""INVALID_INPUT"",
+    ""errors"": [
+        ""Booking not found with PNR: INVALID123""
+    ],
+    ""timestamp"": ""2025-11-16T21:21:06""
+}
+",,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,400 bAD REQUEST,,,,
+,,,,,,,,,
+,,,,,,,,,
+6,GET,/api/v1.0/flight/booking/history/{emailId},,"http://localhost:8090/api/v1.0/flight/booking/history/ashutosh@email.com
+",200 OK,"{
+    ""success"": true,
+    ""message"": ""Found 2 booking(s)"",
+    ""data"": [
+        {
+            ""bookingId"": 5,
+            ""pnr"": ""251116AB1C"",
+            ""contactName"": ""Ashutosh"",
+            ""email"": ""ashutosh@email.com"",
+            ""numberOfSeats"": 1,
+            ""totalAmount"": 4500.00,
+            ""bookingStatus"": ""CONFIRMED"",
+            ""bookingDate"": ""2025-11-16T23:20:00"",
+            ""flight"": {
+                ""flightId"": 1,
+                ""flightNumber"": ""6E203"",
+                ""airlineName"": ""Indigo"",
+                ""fromLocation"": ""DEL"",
+                ""toLocation"": ""BLR"",
+                ""departureTime"": ""2025-12-01T10:00:00"",
+                ""arrivalTime"": ""2025-12-01T12:15:00""
+            },
+            ""passengers"": [
+                {
+                    ""passengerName"": ""Ashu"",
+                    ""gender"": ""MALE"",
+                    ""age"": 24,
+                    ""seatNumber"": ""12A"",
+                    ""mealPreference"": ""VEG""
+                }
+            ]
+        }
+    ],
+    ""timestamp"": ""2025-11-17T00:00:00""
+}
+",,,
+,,,,,,,,,
+,,,,,,"{
+    ""success"": true,
+    ""message"": ""No bookings found for this email"",
+    ""data"": [],
+    ""timestamp"": ""2025-11-17T00:01:25""
+}",,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,"500
+Internal Server Error ","{
+    ""success"": false,
+    ""message"": ""An unexpected error occurred. Please try again later."",
+    ""errorCode"": ""INTERNAL_SERVER_ERROR"",
+    ""errors"": [
+        ""No static resource api/v1.0/flight/booking/history.""
+    ],
+    ""timestamp"": ""2025-11-17T18:26:36""
+}",,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+7,DELETE,/api/v1.0/flight/booking/cancel/{pnr},,http://localhost:8090/api/v1.0/flight/booking/cancel/251116J1FH,200 OK,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,400 BAD REQUEST,"{
+    ""success"": false,
+    ""message"": ""Booking is already cancelled"",
+    ""errorCode"": ""INVALID_INPUT"",
+    ""errors"": [
+        ""Booking is already cancelled""
+    ],
+    ""timestamp"": ""2025-11-17T18:43:07""
+}",,,
