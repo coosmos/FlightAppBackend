@@ -18,11 +18,10 @@ Request/Response body
 HTTP codes
 Error schema
 
-🏗️ Architecture
-controller → service → repository → database
-        ↘ dto ↙         ↘ entity ↙
+<img width="530" height="120" alt="image" src="https://github.com/user-attachments/assets/39ea3677-315c-4795-b4ef-68401b820d98" />
 
-🗂️ Project Structure
+
+ Project Structure
 src/
  └── main/
       └── java/com/flightapp
