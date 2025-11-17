@@ -21,10 +21,6 @@ public class BookingController {
 
     private final BookingService bookingService;
 
-    /**
-     * POST /api/v1.0/flight/booking/{flightId}
-     * Book a flight ticket
-     */
     @PostMapping("/booking/{flightId}")
     public ResponseEntity<ApiResponse<BookingResponse>> bookFlight(
             @PathVariable Long flightId,
@@ -38,15 +34,12 @@ public class BookingController {
                 .body(ApiResponse.success("Flight booked successfully. PNR: " + response.getPnr(), response));
     }
 
-    /**
-     * GET /api/v1.0/flight/ticket/{pnr}
-     * Get ticket details by PNR
-     */
+    
     @GetMapping("/ticket/{pnr}")
     public ResponseEntity<ApiResponse<BookingResponse>> getTicketByPNR(
             @PathVariable String pnr) {
         
-        // Trim whitespace/newlines
+        // Trim whitespace/newlines , caused issues in apis endpoint because of newline insertion
         String trimmedPnr = pnr.trim();
         
         log.info("REST request to get ticket details for PNR: {}", trimmedPnr);
@@ -56,10 +49,6 @@ public class BookingController {
         return ResponseEntity.ok(ApiResponse.success("Ticket details retrieved successfully", response));
     }
 
-    /**
-     * GET /api/v1.0/flight/booking/history/{emailId}
-     * Get booking history by email
-     */
     @GetMapping("/booking/history/{emailId}")
     public ResponseEntity<ApiResponse<List<BookingResponse>>> getBookingHistory(
             @PathVariable String emailId) {
@@ -76,10 +65,6 @@ public class BookingController {
                 String.format("Found %d booking(s)", bookings.size()), bookings));
     }
 
-    /**
-     * DELETE /api/v1.0/flight/booking/cancel/{pnr}
-     * Cancel a booking
-     */
     @DeleteMapping("/booking/cancel/{pnr}")
     public ResponseEntity<ApiResponse<Void>> cancelBooking(
             @PathVariable String pnr) {

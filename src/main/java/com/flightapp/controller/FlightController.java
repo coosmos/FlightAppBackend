@@ -22,10 +22,6 @@ public class FlightController {
 
     private final FlightService flightService;
 
-    /**
-     * POST /api/v1.0/flight/airline/inventory/add
-     * Add flight inventory/schedule
-     */
     @PostMapping("/airline/inventory/add")
     public ResponseEntity<ApiResponse<FlightSearchResponse>> addFlightInventory(
             @Valid @RequestBody FlightInventoryRequest request) {
@@ -38,10 +34,6 @@ public class FlightController {
                 .body(ApiResponse.success("Flight inventory added successfully", response));
     }
 
-    /**
-     * POST /api/v1.0/flight/search
-     * Search for available flights
-     */
     @PostMapping("/search")
     public ResponseEntity<ApiResponse<List<FlightSearchResponse>>> searchFlights(
             @Valid @RequestBody FlightSearchRequest request) {
@@ -59,10 +51,6 @@ public class FlightController {
                 String.format("Found %d flight(s) matching your search", flights.size()), flights));
     }
 
-    /**
-     * GET /api/v1.0/flight/{flightId}
-     * Get flight details by ID
-     */
     @GetMapping("/{flightId}")
     public ResponseEntity<ApiResponse<FlightSearchResponse>> getFlightById(
             @PathVariable Long flightId) {

@@ -67,14 +67,9 @@ public class BookingServiceImpl implements BookingService {
 
         // Validate seat numbers are unique and not already booked
         validateSeatNumbers(flightId, request.getPassengers());
-
-        // Generate unique PNR
         String pnr = generateUniquePNR();
-
-        // Calculate total amount
         BigDecimal totalAmount = flight.getBasePrice().multiply(BigDecimal.valueOf(passengerCount));
 
-        // Create booking
         Booking booking = Booking.builder()
                 .pnr(pnr)
                 .flight(flight)
